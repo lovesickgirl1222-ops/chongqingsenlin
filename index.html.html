@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>광둥어–한국어 받침 사전</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#faf6ef;--fg:#1f1a17;--card:#fff;--mut:#75695f;--line:#e5dccf;--ac:#b3261e;
+--k:#2563eb;--n:#16a34a;--t:#dc2626;--m:#ea8a0c;--p:#9333ea;--ng:#0d9488}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#17130f;--fg:#f3ece3;--card:#241e18;--mut:#a89b8d;--line:#3a3028;--ac:#ff7a6e;--k:#6b9bff;--n:#4ade80;--t:#ff6b6b;--m:#fbb040;--p:#c084fc;--ng:#2dd4bf}}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.55;padding-bottom:84px}
+main{max-width:640px;margin:0 auto;padding:16px}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;background:var(--bg);border-bottom:1px solid var(--line);max-width:100%;overflow-x:auto}
+nav button{flex:1;min-width:76px;padding:12px 6px;border:0;background:none;color:var(--mut);font:600 14px inherit;font-family:inherit;border-bottom:3px solid transparent}
+nav button.on{color:var(--fg);border-color:var(--ac)}
+h1{font-size:26px;line-height:1.3;margin:8px 0 12px}h2{font-size:20px;margin:6px 0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:10px 0}
+.mut{color:var(--mut);font-size:14px}
+.k{color:var(--k)}.n{color:var(--n)}.t{color:var(--t)}.m{color:var(--m)}.p{color:var(--p)}.ng{color:var(--ng)}
+.co{font-weight:800;text-decoration:underline;text-decoration-thickness:3px;text-underline-offset:3px}
+.chip{display:inline-block;padding:2px 9px;border-radius:99px;font-size:13px;font-weight:700;border:1.5px solid currentColor}
+.scroll{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+.w{cursor:pointer}.w .top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.han{font-size:26px;font-weight:700}.det{display:none;margin-top:10px;border-top:1px dashed var(--line);padding-top:10px}
+.w.open .det{display:block}
+.twist{border:2px solid var(--t);background:color-mix(in srgb,var(--t) 8%,var(--card))}
+.sy{display:inline-block;text-align:center;margin-right:10px}.sy b{font-size:22px;display:block}
+.btn{display:block;width:100%;padding:12px;border-radius:12px;border:1.5px solid var(--line);background:var(--card);color:var(--fg);font:600 16px inherit;font-family:inherit;margin:6px 0;text-align:left}
+.btn.ok{border-color:var(--n);background:color-mix(in srgb,var(--n) 14%,var(--card))}.btn.no{border-color:var(--t);background:color-mix(in srgb,var(--t) 12%,var(--card))}
+.prim{background:var(--ac);color:#fff;border:0;text-align:center}
+.legend span{margin-right:8px}
+iframe{width:100%;aspect-ratio:9/16;max-height:420px;border:0;border-radius:12px}
+.sp{border:1.5px solid var(--ac);color:var(--ac);background:none;border-radius:99px;padding:4px 10px;font:600 13px inherit;font-family:inherit;cursor:pointer}
+details.card summary{cursor:pointer}details.card p{margin:8px 0}
+#toast{display:none;position:fixed;left:14px;right:14px;bottom:80px;background:#222;color:#fff;padding:10px 14px;border-radius:10px;font-size:14px;z-index:10}
+#listen{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));background:var(--ac);color:#fff;text-decoration:none;font-weight:700;padding:13px 18px;border-radius:99px;box-shadow:0 4px 14px #0004;z-index:9}
+</style></head><body>
+<nav id="nav"></nav><main id="app"></main>
+<div id="toast"></div>
+<a id="listen" href="https://youtube.com/shorts/McR4ChikY2k?si=EJXvcDzabNKrF1dM" target="_blank" rel="noopener">🔊 발음 듣기</a>
+<script>
+var CL={k:'ㄱ',n:'ㄴ',t:'ㄷ→ㄹ',m:'ㅁ',p:'ㅂ',ng:'ㅇ'};
+var KJ={0:'',1:'k',4:'n',7:'t',8:'t',16:'m',17:'p',21:'ng'}; // 종성 index → 계열 (8=ㄹ)
+var KN={1:'ㄱ',4:'ㄴ',7:'ㄷ',8:'ㄹ',16:'ㅁ',17:'ㅂ',21:'ㅇ'};
+// [한자, 한국어, Jyutping, 보통화, 메모, 분류]
+var W=[
+["國","국","gwok3","guó","-k ↔ ㄱ. 가장 대표적인 대응",1],
+["三","삼","saam1","sān","-m ↔ ㅁ. 보통화는 -n으로 합쳐짐",1],
+["一","일","jat1","yī","광둥어 -t가 한국 한자음에서 ㄹ로 바뀐 사례",1],
+["記憶","기억","gei3 jik6","jìyì","憶(억): -k ↔ ㄱ. 記는 받침 없음",1],
+["肉","육","juk6","ròu","-k ↔ ㄱ. 보통화에서는 받침이 사라짐",1],
+["日期","일기","jat6 kei4","rìqī","日(일): -t → ㄹ"],
+["萬","만","maan6","wàn","-n ↔ ㄴ"],
+["年","년","nin4","nián","-n ↔ ㄴ"],
+["保鮮","보선","bou2 sin1","bǎoxiān","鮮(선): -n ↔ ㄴ. 保는 받침 없음"],
+["過期","과기","gwo3 kei4","guòqī","두 글자 모두 받침 없음 (비교용)"],
+["十","십","sap6","shí","-p ↔ ㅂ. 보통화는 받침 소실"],
+["合","합","hap6","hé","-p ↔ ㅂ"],
+["心","심","sam1","xīn","-m ↔ ㅁ"],
+["南","남","naam4","nán","-m ↔ ㅁ. 보통화는 -n"],
+["東","동","dung1","dōng","-ng ↔ ㅇ"],
+["中","중","zung1","zhōng","-ng ↔ ㅇ"],
+["學","학","hok6","xué","-k ↔ ㄱ"],
+["月","월","jyut6","yuè","-t → ㄹ"],
+["八","팔","baat3","bā","-t → ㄹ"],
+["山","산","saan1","shān","-n ↔ ㄴ"],
+["食","식","sik6","shí","-k ↔ ㄱ"]];
+var showKo=true,KO={};'如여果과記기憶억都도係계一일個개罐관頭두話화我아希희望망過과期기會회定정要요加가日일萬만年년知지幾기時시開개始시每매樣양上상面면有유秋추刀도魚어肉육醬장連연保보鮮선紙지懷회疑의世세界계仲중'.replace(/(.)(.)/g,function(a,b,c){KO[b]=c;return ''});
+var DL=[["如果記憶都係一個罐頭嘅話","jyu4 gwo2 gei3 jik6 dou1 hai6 jat1 go3 gun3 tau2 ge3 waa2"],["我希望呢個罐頭唔會過期","ngo5 hei1 mong6 ni1 go3 gun3 tau2 m4 wui3 gwo3 kei4"],["如果一定要加一個日期嘅話","jyu4 gwo2 jat1 ding6 jiu3 gaa1 jat1 go3 jat6 kei4 ge3 waa2"],["我希望佢係一萬年","ngo5 hei1 mong6 keoi5 hai6 jat1 maan6 nin4"],["唔知幾時開始每樣嘢上面都有一個日期","m4 zi1 gei2 si4 hoi1 ci2 mui5 joeng6 je5 soeng6 min6 dou1 jau5 jat1 go3 jat6 kei4"],["秋刀魚會過期","cau1 dou1 jyu2 wui3 gwo3 kei4"],["肉醬會過期","juk6 zoeng3 wui3 gwo3 kei4"],["連保鮮紙都會過期","lin4 bou2 sin1 zi2 dou1 wui3 gwo3 kei4"],["我開始懷疑喺呢個世界上","ngo5 hoi1 ci2 waai4 ji4 hai2 ni1 go3 sai3 gaai3 soeng6"],["仲有乜嘢係唔會過期嘅","zung6 jau5 mat1 je5 hai6 m4 wui3 gwo3 kei4 ge3"]];
+
+function cj(s){var m=/^([a-z]*?[aeiouy]+)(ng|k|t|p|m|n)?(\d)$/.exec(s);return m?[m[1],m[2]||'',m[3]]:[s,'','']}
+function jh(s){var a=cj(s);return a[1]?a[0]+'<span class="co '+a[1]+'">'+a[1]+'</span>'+a[2]:s}
+function kc(c){var x=c.charCodeAt(0)-44032;if(x<0||x>11171)return '';return KJ[x%28]||''}
+function kn(c){return KN[(c.charCodeAt(0)-44032)%28]||''}
+function jhs(j){return j.split(' ').map(jh).join(' ')}
+function sylls(w){var h=Array.from(w[0]),k=Array.from(w[1]),j=w[2].split(' '),o='';
+for(var i=0;i<h.length;i++){var a=cj(j[i])[1],b=kc(k[i]);
+o+='<div class="sy"><span class="mut">'+h[i]+'</span><b>'+jh(j[i])+'</b><b class="'+b+'">'+k[i]+'</b>'+
+(a?'<span class="chip '+a+'">-'+a+'</span> ':'')+(kn(k[i])?'<span class="chip '+(b||'')+'">'+kn(k[i])+'</span>':'<span class="mut">받침 없음</span>')+'</div>'}
+return o}
+var T=["홈","받침 대응표","단어 사전","대사 분석","퀴즈","보고서"],cur=0,open={};
+var legend='<div class="legend"><span class="k">■ ㄱ -k</span><span class="n">■ ㄴ -n</span><span class="t">■ ㄷ/ㄹ -t</span><span class="m">■ ㅁ -m</span><span class="p">■ ㅂ -p</span><span class="ng">■ ㅇ -ng</span></div>';
+function nav(){document.getElementById('nav').innerHTML=T.map(function(t,i){return '<button class="'+(i==cur?'on':'')+'" onclick="go('+i+')">'+t+'</button>'}).join('')}
+function go(i){cur=i;try{location.hash='s'+i}catch(e){}render();window.scrollTo(0,0)}
+function wcard(i){var w=W[i],tw=w[0]=='一',h=Array.from(w[0]).map(function(c,x){return c}).join('');
+return '<div class="card w '+(tw?'twist ':'')+(open[i]?'open':'')+'" onclick="open['+i+']=!open['+i+'];render()">'+
+'<div class="top"><span><span class="han">'+w[0]+'</span> <b>'+w[1]+'</b> <span class="mut">'+jhs(w[2])+'</span></span>'+(tw?'<span class="chip t">반전 ⚡</span>':'<span class="mut">▾</span>')+'<button class="sp" onclick="event.stopPropagation();say(\''+w[0]+'\')">🔊</button></div>'+
+'<div class="det">'+sylls(w)+
+'<table><tr><th>한국어</th><th>광둥어</th><th>보통화</th></tr><tr><td>'+w[1]+'</td><td>'+jhs(w[2])+'</td><td>'+w[3]+'</td></tr></table>'+
+'<p>'+w[4]+'</p>'+(HG[w[0]]?'<p class="mut">한글 표기(보고서): '+HG[w[0]]+'</p>':'')+(tw?'<p><b>⚡ 반전 포인트:</b> 광둥어 jat의 -t는 ㄷ과 같은 소리인데, 한국 한자음에서는 ㄹ(일)로 변했습니다. 그래서 \'받침이 같다\'가 아니라 \'-t ↔ ㄹ\'로 외워야 합니다.</p>':'')+'</div></div>'}
+var qs=[["gwok3","국",["국","군","궁","굽"]],["saam1","삼",["산","삽","삼","상"]],["jat1","일",["익","일","인","임"]],["juk6","육",["윤","융","육","욤"]],["dung1","동",["독","돈","돔","동"]]];
+var qi=0,sc=0,pk=-1,QH=['國','三','一','肉','東'];
+var HG={'國':'궉','三':'쌈','一':'얏','記憶':'게 익','肉':'육','萬':'만','年':'닌','保鮮':'보우신'};
+var DT=[['유 과 게 익 도 하이 얏 고 군 타우 게 와','만약 기억도 하나의 통조림이라 한다면,'],['응오 헤이 망 니 고 군 타우 음 우이 과 케이','나는 이 통조림의 유통기한이 지나지 않기를 바란다.'],['유 과 얏 딩 이우 가 얏 고 얏 케이 게 와','만약 유통기한을 반드시 정해야 한다면,'],['응오 헤이 망 쾨 하이 얏 만 닌','내 통조림의 유통기한은 만년으로 하고 싶다.'],['음 지 게 시 호이 치, 무이 영 예 슈안 민 도 야우 얏 고 얏 케이','언제부터 시작되었는지는 모르겠지만, 모든 물건에는 유통기한이 적혀있다.'],['차우 두 위 우이 과 케이','꽁치 통조림도 유통기한이 지나고,'],['육 쨩 우이 과 케이','미트소스 통조림도 유통기한이 지나고'],['린 보 신지 두 도 우이 과 케이','심지어 보선지 조차도 유통기한이 지나간다.'],['응오 호이 치 와이 이, 하이 니 고 사이 가이 샹','나는 의문이 들기 시작했다, 이 세상에,'],['중 야우 맛 예 하이 음 우이 과 케이 게','유통기한이 지나지 않는 것이 과연 존재하는지 말이다.']];
+function toast(m){var e=document.getElementById('toast');e.textContent=m;e.style.display='block';setTimeout(function(){e.style.display='none'},5000)}
+function say(t){try{var s=window.speechSynthesis;if(!s){toast('이 브라우저는 음성 재생을 지원하지 않아요. 영상 버튼을 이용하세요.');return}s.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='zh-HK';u.rate=.8;var all=s.getVoices(),v=all.filter(function(x){return /zh[-_]HK|yue/i.test(x.lang)});if(v.length)u.voice=v[0];else if(all.length)toast('이 기기에 광둥어(zh-HK) 음성이 없어 보통화로 읽을 수 있어요. 정확한 발음은 영상으로 확인하세요.');s.speak(u)}catch(e){toast('음성 재생에 실패했어요. 영상 버튼을 이용하세요.')}}
+try{speechSynthesis.getVoices()}catch(e){}
+function D(t,b){return '<details class=card><summary><b>'+t+'</b></summary>'+b+'</details>'}
+function report(){return '<h2>탐구 보고서</h2><div class="card twist"><b>영화 중경삼림의 대사를 통한 광둥어와 한국어 받침의 체계 대조 연구</b><p class=mut>김효은(2506) · 주제어: 한국어, 광둥어, 받침(종성) 대조, 중경삼림</p><p>한국어 7개 대표 종성 중 ㄹ을 제외한 6개(ㄱ ㄴ ㄷ ㅁ ㅂ ㅇ)가 광둥어의 -k -n -t -m -p -ng와 대응하며, 두 언어 모두 음절 말 불파음 특성을 공유합니다. 다만 광둥어 입성 -t는 한국어에서 유음 ㄹ로 변했습니다.</p></div>'+
+D('Ⅰ-1. 연구 계기 및 목적','<p>중국권 영화·음악을 즐기며 방언에 흥미를 느꼈고, 1학기 방언 조사가 겉핥기에 그친 아쉬움에서 한 방언을 깊게 보는 후속 탐구로 광둥어를 택했습니다. 홍콩 영화 중경삼림의 대사로 광둥어와 한국어 받침의 공통점·차이점을 파악하는 것이 목적입니다.</p>')+
+D('Ⅰ-2. 연구 방법','<p>① 한국민족문화대백과사전의 7개 종성과 음절 끝소리 규칙 정리 → ② 도서 ‘장국영의 언어’로 광둥어 6개 받침, 성조, 성모, 운모 구조 학습 → ③ 중경삼림을 시청하며 주요 단어·일상 표현 수집 및 광둥어 번역 → ④ 번역 자료로 한국어 받침 패턴과 특수 변형 규칙 분석</p>')+
+D('Ⅰ-3. 선행 연구','<p>현대 한국어는 7개 대표 종성과 불파음 특성을 가집니다. 표준 중국어는 음절 말에 비음 2개(-n, -ng)만 허용하지만 광둥어는 ㄹ을 뺀 6개 종성을 보유합니다. 광둥어는 비음 종성 2개가 독립해 쓰일 수 있다는 점에서 한국어와 미세한 차이가 있고, 광둥어 화자는 한국어 종성 인지도가 높지만 조음 위치·발음 습관 차이로 말하기 오류가 나타나기도 합니다.</p>')+
+D('Ⅰ-4. 광둥어 이론','<p>광둥어는 월방언이라 부르는 것이 가장 적절하며 중국 7대 방언 중 하나입니다. 약 1억 2천만 명 이상이 모국어로 쓰고, 광둥성·광시성·홍콩·마카오·화교 사회에서 사용됩니다. 미국·캐나다·일본 등 주요 대학에서 관련 강좌가 개설되어 있습니다.</p>')+
+D('Ⅱ-1-가. 한국어 받침 특징','<p>표기상 받침은 27개(홑 14, 겹 11, 쌍 2)지만 실제 발음은 ㄱ ㄴ ㄷ ㄹ ㅁ ㅂ ㅇ 7개입니다. 예: 잎→[입], 낮→[낟].</p><p><b>불파음화</b>: 파열음 종성이 음절 말에서 공기를 터뜨리지 않고 막은 채 끝나는 현상입니다. 빛·빚·빗은 단독으로 모두 [빋]이 되며, 이를 <b>중화</b>라고 합니다.</p><p>비음은 ㅁ ㄴ ㅇ이며, 초성 ㅇ은 음가가 없지만 받침 ㅇ은 음가를 가집니다.</p>')+
+D('Ⅱ-1-나. 광둥어 받침 특징','<p>받침은 -p -t -k -m -n -ng 6개입니다. 안울림소리 -p -t -k는 ㅂ ㄷ ㄱ에, 울림소리 -m -n -ng는 ㅁ ㄴ ㅇ에 대응합니다. 보통화와 달리 입성과 -m을 그대로 간직해 한자음과 비슷한 부분이 많고, 입성은 한국어 파열음처럼 불파음 특성을 보입니다. -m과 -ng는 모음 없이 한 음절을 이루기도 합니다(唔 m4, 吳 ng4).</p>')+
+D('Ⅱ-1-다. 3단 비교 (國·三·一)','<div class=scroll><table><tr><th>한자</th><th>한국어</th><th>광둥어</th><th>보통화</th></tr><tr><td>國</td><td>국</td><td>궉 kwok</td><td>궈 guo</td></tr><tr><td>三</td><td>삼</td><td>쌈 saam</td><td>싼 san</td></tr><tr><td>一</td><td>일</td><td>얏 jat</td><td>이 yi</td></tr></table></div><p>國: 한국어·광둥어는 입성 -k를 유지, 보통화는 받침 소실. 三: -m 유지, 보통화는 -n. 一: 광둥어는 -t를 유지하나 한국 한자음 발달 과정에서 ㄹ(일)로 변했습니다.</p>')+
+D('Ⅱ-2. 대사 속 받침 분석','<p><b>입성(ㄱ)</b>: 記憶(게 익)·肉(육)·國(궉)은 모두 불파음. <b>비음 ㅁ</b>: 三(쌈)=삼. <b>비음 ㄴ·ㅇ</b>: 萬(만)·年(닌)·保鮮(보선) 등에서 구조가 일치. 唔(m4)처럼 광둥어에는 모음 없는 성절 비음이 있지만 한국어는 초성·중성·종성 구조가 필요합니다.</p><p><b>초성·음절 구조</b>: jyutping의 j는 반모음 [j]라서 jik은 [익]처럼 들립니다. 我(ngo5)의 초성 ng는 음가가 있지만 한국어 초성 ㅇ은 음가가 없습니다.</p><p class=mut>→ 대사 전체는 ‘대사 분석’ 탭에서 확인하세요.</p>')+
+D('Ⅲ. 결론 및 한계, 느낀점','<p><b>결론</b>: 한국어 6개 받침이 광둥어 6개 받침과 대응하고, 보통화는 입성이 소멸해 비음 2개만 남은 반면 광둥어와 한국어는 입성·비음 받침을 유지해 긴밀성이 높습니다. 一(jat1)은 -t가 ㄹ로 변한 사례입니다.</p><p><b>한계</b>: 국내에는 보통화 자료가 대부분이라 광둥어 자료 조사가 어려웠고, ‘장국영의 언어’는 발음 설명이 추상적이었습니다. 영화 대사만 분석해 광둥어 전반의 음운 변동을 일반화하기엔 한계가 있습니다. 앞으로 다양한 대화 데이터를 수집해 범위를 넓힐 계획입니다.</p><p><b>느낀점</b>: 아쉬움을 해소한 뜻깊은 탐구였고, 이후 쓰촨화 탐구에 도전하고 싶습니다.</p>')+
+D('참고 자료','<p>알라딘, 2020, 음절 끝소리 규칙 및 연음과 절음<br>증약아(성균관대), 2022, 중국 광동어와 한국어의 종성 발음 대조 연구<br>최세화, 2023, 받침, 한국민족문화대백과사전<br>도서 ‘장국영의 언어’<br>粤语西多士朗读版, 小红书</p>')}
+function quiz(){if(qi>=5)return '<h2>결과: '+sc+' / 5</h2><div class="card">'+(sc==5?'완벽해요! 받침 규칙이 귀에 들어오기 시작했어요.':'받침 대응표를 다시 보고 도전해 보세요.')+'</div><button class="btn prim" onclick="qi=0;sc=0;pk=-1;render()">다시 풀기</button>';
+var q=qs[qi];return '<h2>미니 퀴즈 '+(qi+1)+' / 5</h2><div class="card"><p class="mut">광둥어 발음을 보고 한국어 한자음을 고르세요</p><div style="font-size:34px;font-weight:800">'+jh(q[0])+'</div><button class="sp" onclick="say(QH[qi])">🔊 발음 듣기</button></div>'+
+q[2].map(function(o,i){var c=pk<0?'':(o==q[1]?'ok':(i==pk?'no':''));return '<button class="btn '+c+'" onclick="ans('+i+')">'+o+'</button>'}).join('')+
+(pk>=0?'<button class="btn prim" onclick="qi++;pk=-1;render()">다음 →</button>':'')}
+function ans(i){if(pk>=0)return;pk=i;if(qs[qi][2][i]==qs[qi][1])sc++;render()}
+function render(){nav();var h='';
+if(cur==0)h='<h1>광둥어를 몰라도 \'국, 삼, 육\'이 들린다고?</h1><div class="card"><p>영화 <b>중경삼림</b>의 유통기한 대사에는 日期(일기), 保鮮(보선), 過期(과기), 一萬年(일만년) 같은 말이 나옵니다. 한국어 한자음을 아는 사람이라면 광둥어 발음 속에서 익숙한 <b>받침</b>이 들립니다.</p><p>한국어의 ㄱ·ㄴ·ㅁ·ㅂ·ㅇ은 광둥어의 -k·-n·-m·-p·-ng와 대응하고, -t는 한자음에서 ㄹ로 바뀌었어요.</p></div>'+legend+
+'<div class="card twist"><b>⚡ 반전:</b> 一은 jat1인데 한국어는 \'일\'. -t가 ㄹ로 변했습니다!</div>'+
+'<h2>🔊 계속 듣기</h2><div class="card"><iframe src="https://www.youtube.com/embed/McR4ChikY2k" title="발음 영상" allowfullscreen></iframe><p class="mut">영상이 안 보이면 오른쪽 아래 \'발음 듣기\' 버튼을 누르세요. 어느 화면에서든 다시 들을 수 있습니다.</p></div>'+
+'<button class="btn prim" onclick="go(1)">받침 대응표 보기 →</button>';
+else if(cur==1)h='<h2>받침 대응표</h2><p class="mut">한국어 받침 7개 중 ㄹ을 제외한 6개가 광둥어 입성·비음 받침과 대응합니다.</p><div class="card scroll"><table><tr><th>한국어</th><th>광둥어</th><th>예시</th><th>보통화</th></tr>'+
+[["ㄱ","k","k","國 국 gwok3","guó (소실)"],["ㄴ","n","n","山 산 saan1","shān (유지)"],["ㄷ*","t","t","一 일 jat1 (*ㄹ로 변함)","yī (소실)"],["ㅁ","m","m","三 삼 saam1","sān (-n으로 합류)"],["ㅂ","p","p","十 십 sap6","shí (소실)"],["ㅇ","ng","ng","東 동 dung1","dōng (유지)"]].map(function(r){return '<tr><td class="'+r[2]+'"><b>'+r[0]+'</b></td><td class="'+r[2]+'"><b>-'+r[1]+'</b></td><td>'+r[3]+'</td><td>'+r[4]+'</td></tr>'}).join('')+'</table></div>'+
+'<div class="card mut">* ㄷ 받침은 소리로는 -t와 같지만, 한국 한자음에서 옛 -t는 대부분 ㄹ(일·월·팔)이 되었습니다. 보고서와 대조해 표현을 최종 확인하세요.</div><div class="card"><b>핵심:</b> 보통화는 -k·-t·-p 받침이 사라지고 -m은 -n으로 합쳐졌습니다. 그래서 한국어 한자음이 광둥어와 더 닮은 경우가 많습니다.</div>';
+else if(cur==2)h='<h2>단어 사전</h2><p class="mut">카드를 누르면 펼쳐져요. 받침은 색으로 표시됩니다.</p>'+legend+W.map(function(w,i){return i<5?wcard(i):''}).join('')+'<h2 style="margin-top:18px">더 보기</h2>'+W.map(function(w,i){return i>=5?wcard(i):''}).join('');
+else if(cur==3)h='<h2>대사 분석</h2><p class="mut">중경삼림 유통기한 대사를 한 줄씩 보며 광둥어 받침(-k -n -t -m -p -ng)을 색으로 표시했습니다. 줄 아래 칩은 그 줄의 받침 개수입니다.</p>'+legend+'<button class="btn" onclick="showKo=!showKo;render()">'+(showKo?'✅':'⬜')+' 한국 한자음 함께 보기 (구어 글자는 ·)</button>'+DL.map(function(l,n){var s=l[1].split(' '),cs={};var row=Array.from(l[0]).map(function(c,i){var a=cj(s[i])[1];if(a)cs[a]=(cs[a]||0)+1;var ko=KO[c]||'';return '<div class="sy" style="cursor:pointer" onclick="say(\''+c+'\')"><span class="mut">'+c+'</span><b>'+jh(s[i])+'</b>'+(showKo?'<b class="'+(ko?kc(ko):'')+'">'+(ko||'·')+'</b>':'')+'</div>'}).join('');return '<div class="card"><div class="mut">'+(n+1)+(n<4?' · 유통기한 독백 (통조림)':' · 유통기한 독백 (모든 것에 날짜가)')+'</div>'+row+'<p class="mut" style="margin:6px 0 0">'+DT[n][0]+'</p><p style="margin:2px 0 8px">'+DT[n][1]+'</p><button class="sp" onclick="say(DL['+n+'][0])">🔊 문장 듣기</button> <span class="mut">글자를 누르면 한 글자씩 들려요</span><div style="margin-top:8px">'+Object.keys(cs).map(function(a){return '<span class="chip '+a+'">-'+a+' ×'+cs[a]+'</span> '}).join('')+'</div></div>'}).join('');
+else if(cur==4)h=quiz();else h=report();
+document.getElementById('app').innerHTML=h}
+var m=/^#s(\d)$/.exec(location.hash);if(m)cur=+m[1];render();
+</script></body></html>
